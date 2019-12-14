@@ -1,3 +1,5 @@
+// We need to use jQuery for the following:
+
 var player1 = prompt("Player One: Enter Your Name , you will be Blue");
 var player1Color = 'rgb(86, 151, 255)';
 
@@ -112,6 +114,21 @@ function diagonalWinCheck() {
             } else {
                 continue;
             }
+        }
+    }
+}
+
+// Game End
+function gameEnd(winningPlayer) {
+    for (var col = 0; col < 7; col++) {
+        for (var row = 0; row < 7; row++) {
+            $('h3').fadeOut('fast');
+            $('h2').fadeOut('fast');
+            $('h1')
+                .text(
+                    winningPlayer + " has won! Refresh your browser to play again!"
+                )
+                .css("fontSize", "50px")
         }
     }
 }
