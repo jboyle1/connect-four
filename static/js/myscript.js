@@ -92,18 +92,76 @@ function verticalWinCheck() {
 // Check for Diagonal Wins
 function diagonalWinCheck() {
     for (var col = 0; col < 5; col++) {
-      for (var row = 0; row < 7; row++) {
-        if (colorMatchCheck(returnColor(row,col), returnColor(row+1,col+1) ,returnColor(row+2,col+2), returnColor(row+3,col+3))) {
-          console.log('diag');
-          reportWin(row,col);
-          return true;
-        }else if (colorMatchCheck(returnColor(row,col), returnColor(row-1,col+1) ,returnColor(row-2,col+2), returnColor(row-3,col+3))) {
-          console.log('diag');
-          reportWin(row,col);
-          return true;
-        }else {
-          continue;
+        for (var row = 0; row < 7; row++) {
+            if (colorMatchCheck(returnColor(row, col), returnColor(row + 1, col + 1), returnColor(
+                row + 2,
+                col + 2
+            ), returnColor(row + 3, col + 3))) {
+                console.log('diag');
+                reportWin(row, col);
+                return true;
+            } else if (colorMatchCheck(
+                returnColor(row, col),
+                returnColor(row - 1, col + 1),
+                returnColor(row - 2, col + 2),
+                returnColor(row - 3, col + 3)
+            )) {
+                console.log('diag');
+                reportWin(row, col);
+                return true;
+            } else {
+                continue;
+            }
         }
-      }
     }
-  }
+}
+
+// Start with Player One
+var currentPlayer = 1;
+var currentName = player1;
+var currentColor = player1Color;
+
+// Start with Player One
+$('h3').text(
+    player1 + ": it is your turn, please pick a column to drop your blue chip."
+);
+
+$('.board button').on('click', function () {
+
+    // Recognize what column was chosen
+    var col = $(this)
+        .closest("td")
+        .index();
+
+    // Get back bottom available row to change
+    var bottomAvail = checkBottom(col);
+
+    // Drop the chip in that column at the bottomAvail Row
+    changeColor(bottomAvail, col, currentColor);
+
+    // Check for a win or a tie.
+    if (horizontalWinCheck() || verticalWinCheck() || diagonalWinCheck()) {
+        gameEnd(currentName);
+    }
+
+    // If no win or tie, continue to next player
+    currentPlayer = currentPlayer * -1;
+
+    // Re-Check who the current Player is.
+    if (currentPlayer === 1) {
+        currentName = player1;
+        $('h3').text(
+            currentName +
+            ": it is your turn, please pick a column to drop your blue chip."
+        );
+        currentColor = player1Color;
+    } else {
+        currentName = player2
+        $('h3').text(
+            currentName +
+            ": it is your turn, please pick a column to drop your red chip."
+        );
+        currentColor = player2Color;
+    }
+
+})
